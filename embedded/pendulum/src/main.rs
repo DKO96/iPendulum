@@ -5,6 +5,14 @@ const CPR: f64 =  4096.0;
 const POLES: f64 =  11.0;
 const OFFSET: f64 =  0.0;
 
+fn wrap_2pi(angle: f64) -> f64 {
+    let mut x: f64 = angle % (2.0 * PI);
+    if x < 0.0 {
+        x += 2.0 * PI;
+    }
+    return x;
+}
+
 fn main() {
     let v_d: f64 = 0.0;
     let v_q: f64 = 4.4;
@@ -14,10 +22,11 @@ fn main() {
     let mut b_v = Vec::new();
     let mut c_v = Vec::new();
 
-    for ticks in 0..4096 {
+    for ticks in 0..8192 {
         let theta_m: f64= ticks as f64 * 2.0 * PI / CPR;
-        let theta_e: f64= POLES * (theta_m - OFFSET);
+        let mut theta_e: f64= POLES * (theta_m - OFFSET);
 
+        theta_e = wrap_2pi(theta_e);
 
         let v_alpha = v_d * f64::cos(theta_e) - v_q * f64::sin(theta_e);
         let v_beta = v_d * f64::sin(theta_e) + v_q * f64::cos(theta_e);
