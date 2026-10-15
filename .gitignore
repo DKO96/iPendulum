@@ -1,1 +1,3 @@
 embedded/pendulum/target/
+embedded/FOC/.cache/
+embedded/FOC/build/
