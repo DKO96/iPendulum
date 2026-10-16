@@ -1,12 +1,6 @@
 #include "gpio.h"
 
-#include "stm32f446xx.h"
-
-void gpio_led(void) {
-  // Configure GPIOA mode port for PA5
-  GPIOA->MODER &= ~GPIO_MODER_MODE5;
-  GPIOA->MODER |= GPIO_MODER_MODE5_0;
-}
+#include <stm32f446xx.h>
 
 void gpio_usart2(void) {
   // Configure PA2, PA3 for USART2
@@ -19,12 +13,26 @@ void gpio_usart2(void) {
       ((7U << GPIO_AFRL_AFSEL2_Pos) | (7U << GPIO_AFRL_AFSEL3_Pos));
 }
 
+void gpio_pwm(void) {
+  GPIOA->MODER &= ~(GPIO_MODER_MODE8 | GPIO_MODER_MODE9 | GPIO_MODER_MODE10);
+  GPIOA->MODER |=
+      (GPIO_MODER_MODE8_1 | GPIO_MODER_MODE9_1 | GPIO_MODER_MODE10_1);
+
+  GPIOA->OSPEEDR &=
+      ~(GPIO_OSPEEDR_OSPEED8 | GPIO_OSPEEDR_OSPEED9 | GPIO_OSPEEDR_OSPEED10);
+  GPIOA->OSPEEDR |=
+      ((3U << GPIO_OSPEEDR_OSPEED8_Pos) | (3U << GPIO_OSPEEDR_OSPEED9_Pos) |
+       (3U << GPIO_OSPEEDR_OSPEED10_Pos));
+
+  GPIOA->AFR[1] &= ~(GPIO_AFRH_AFSEL8 | GPIO_AFRH_AFSEL9 | GPIO_AFRH_AFSEL10);
+  GPIOA->AFR[1] |=
+      (GPIO_AFRH_AFSEL8_0 | GPIO_AFRH_AFSEL9_0 | GPIO_AFRH_AFSEL10_0);
+}
+
 void gpio_init(void) {
   // Enable clock access to GPIO A, B, C
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
-  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
-  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
 
-  gpio_led();
   gpio_usart2();
+  gpio_pwm();
 }

@@ -2,9 +2,7 @@
 #define MAIN_H_
 
 // Peripherals
-#include "gpio.h"
-#include "timer.h"
-#include "uart.h"
+#include <stm32f446xx.h>
 
 /**
  * @brief Initialize system clock for 180MHz

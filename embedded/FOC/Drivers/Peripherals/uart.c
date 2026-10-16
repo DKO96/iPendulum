@@ -1,5 +1,7 @@
 #include "uart.h"
 
+#include <stm32f446xx.h>
+
 #define PCLK 45000000
 #define BAUDRATE 115200
 
@@ -10,14 +12,9 @@ void uart_init(void) {
   uint32_t usartdiv = (PCLK + (BAUDRATE / 2U)) / BAUDRATE;
   USART2->BRR = usartdiv;
 
-  USART2->CR1 |= USART_CR1_RXNEIE;
-
   USART2->CR1 |= USART_CR1_TE;  // enable transmit
   USART2->CR1 |= USART_CR1_RE;  // enable receive
   USART2->CR1 |= USART_CR1_UE;  // enable UARTx
-
-  NVIC_SetPriority(USART2_IRQn, 5);
-  NVIC_EnableIRQ(USART2_IRQn);
 }
 
 void usart2_write(int ch) {

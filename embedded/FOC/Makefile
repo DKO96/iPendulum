@@ -20,7 +20,6 @@ C_SOURCES = \
     $(wildcard $(SRC_DIR)/*.c) \
     $(wildcard $(PERIPHERALS_DIR)/*.c) \
     $(wildcard $(HARDWARE_DIR)/*.c) \
-    $(wildcard $(FREERTOS_SRC)/*.c) \
 
 ASM_SOURCES = $(STARTUP_DIR)/startup_stm32f446re.s
 

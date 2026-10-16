@@ -1,12 +1,12 @@
 #include "timer.h"
 
-#include "stm32f446xx.h"
+#include <stm32f446xx.h>
 
 void timer_pwm_init(void) {
   RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;
 
-  TIM1->PSC = 89;
-  TIM1->ARR = 9999;
+  TIM1->PSC = 0;
+  TIM1->ARR = PWM_ARR;
 
   // Configure TIM1_CH1
   TIM1->CCMR1 &= ~TIM_CCMR1_OC1M;
@@ -38,6 +38,9 @@ void timer_pwm_init(void) {
 
   // Update generation
   TIM1->EGR |= TIM_EGR_UG;
+
+  // Enable main output
+  TIM1->BDTR |= TIM_BDTR_MOE;
 
   // Enable timer
   TIM1->CR1 |= TIM_CR1_CEN;

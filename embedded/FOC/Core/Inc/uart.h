@@ -1,7 +1,7 @@
 #ifndef UART_H
 #define UART_H
 
-#include "stm32f446xx.h"
+#include <stm32f446xx.h>
 
 /**
  * @brief Initialize USART2 for monitoring robot status

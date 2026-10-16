@@ -1,3 +1,4 @@
 embedded/pendulum/target/
 embedded/FOC/.cache/
 embedded/FOC/build/
+embedded/FOC/compile_commands.json

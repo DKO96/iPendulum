@@ -12,6 +12,7 @@
  */
 
 #include "main.h"
+#include "stm32f446xx.h"
 
 #define PLL_M 4
 #define PLL_N 180
@@ -93,11 +94,16 @@ void delay_ms(uint32_t ms) {
     ;
 }
 
-void system_init(void) {
-  system_clock_init();
-  dwt_init();
-
+void SystemInit(void) {
   // Enable FPU
   SCB->CPACR |=
       ((3UL << 10 * 2) | (3UL << 11 * 2)); /* set CP10 and CP11 Full Access */
+
+  __DSB();
+  __ISB();
+}
+
+void system_init(void) {
+  system_clock_init();
+  dwt_init();
 }
