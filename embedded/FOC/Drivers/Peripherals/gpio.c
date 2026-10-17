@@ -29,10 +29,31 @@ void gpio_pwm(void) {
       (GPIO_AFRH_AFSEL8_0 | GPIO_AFRH_AFSEL9_0 | GPIO_AFRH_AFSEL10_0);
 }
 
+void gpio_i2c1(void) {
+  // Configure PB8 (SCL), PB9 (SDA) for I2C1
+  GPIOB->MODER &= ~(GPIO_MODER_MODE8 | GPIO_MODER_MODE9);
+  GPIOB->MODER |= ((2U << GPIO_MODER_MODE8_Pos) | (2U << GPIO_MODER_MODE9_Pos));
+
+  GPIOB->AFR[1] &= ~(GPIO_AFRH_AFSEL8 | GPIO_AFRH_AFSEL9);
+  GPIOB->AFR[1] |=
+      ((4U << GPIO_AFRH_AFSEL8_Pos) | (4U << GPIO_AFRH_AFSEL9_Pos));
+
+  GPIOB->OTYPER |= (GPIO_OTYPER_OT8 | GPIO_OTYPER_OT9);
+
+  GPIOB->OSPEEDR &= ~((GPIO_OSPEEDR_OSPEED8) | (GPIO_OSPEEDR_OSPEED9));
+  GPIOB->OSPEEDR |=
+      ((3U << GPIO_OSPEEDR_OSPEED8_Pos) | (3U << GPIO_OSPEEDR_OSPEED9_Pos));
+
+  GPIOB->PUPDR &= ~((GPIO_PUPDR_PUPD8) | (GPIO_PUPDR_PUPD9));
+  GPIOB->PUPDR |= ((1U << GPIO_PUPDR_PUPD8_Pos) | (1U << GPIO_PUPDR_PUPD9_Pos));
+}
+
 void gpio_init(void) {
   // Enable clock access to GPIO A, B, C
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
 
   gpio_usart2();
   gpio_pwm();
+  gpio_i2c1();
 }
