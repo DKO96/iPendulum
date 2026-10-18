@@ -61,3 +61,23 @@ void printI(int32_t number) {
     usart2_write(buffer[--i]);
   }
 }
+
+void printF(float number) {
+  if (number < 0) {
+    usart2_write('-');
+    number = -number;
+  }
+
+  uint32_t integer_part = (uint32_t)number;
+  printI(integer_part);
+  usart2_write('.');
+
+  float frac = number - (float)integer_part;
+
+  for (uint8_t i = 0; i < 6; i++) {
+    frac *= 10.0f;
+    uint8_t digit = (uint8_t)frac;
+    usart2_write('0' + digit);
+    frac -= digit;
+  }
+}

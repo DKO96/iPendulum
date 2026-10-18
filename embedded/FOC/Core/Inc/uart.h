@@ -33,4 +33,9 @@ void printH(uint8_t value);
  */
 void printI(int32_t number);
 
+/**
+ * @brief Print floats via USART2
+ */
+void printF(float number);
+
 #endif /* UART_H */
